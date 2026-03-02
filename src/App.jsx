@@ -15,7 +15,7 @@ import Footer from "./components/footer.jsx";
 
 import AdminLogin from "./pages/adminlogin.jsx";
 import CartPage from "./pages/cartpage.jsx";
-import CheckoutPage from "./pages/checkoutpage.jsx";
+import CheckoutPage from "./pages/CheckoutPage.jsx";
 import Contact from "./pages/contact.jsx";
 import OrderTracking from "./pages/ordertracking.jsx";
 import ShopPage from "./pages/shop.jsx";
