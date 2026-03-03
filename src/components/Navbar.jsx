@@ -1,74 +1,77 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
-import Cart from './Cart';
+import React from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
-const Navbar = () => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const { cartCount } = useCart();
+export default function Navbar({
+  cartCount = 0,
+  total = 0,
+  phone1 = "8600010942",
+  phone2 = "8600010944",
+}) {
+  const { pathname } = useLocation();
+  const isShop = pathname.includes("shop");
 
   return (
-  <>
-    <nav className="navbar">
-      <Link to="/" className="logo">
-        <img src="/logo.png" alt="Koli Fish" />
-      </Link>
+    <header className="siteHeader">
+      <div className="navShell">
+        {/* Brand */}
+        <Link to="/" className="brand">
+          <span className="brandMark">K</span>
+          <span className="brandText">KoliFish</span>
+        </Link>
 
-      <div className="navLinks">
-        <Link to="/" className="navLink">Home</Link>
-        <Link to="/products" className="navLink">Products</Link>
+        {/* Search (optional - keep if you already have search wiring) */}
+        <div className="navSearch">
+          <input placeholder="Search fish..." />
+          <button aria-label="Search">
+            🔍
+          </button>
+        </div>
 
-        <button
-          className="cartButton"
-          onClick={() => setIsCartOpen(true)}
-        >
-          🛒 Cart ({cartCount})
-        </button>
+        {/* Right actions */}
+        <div className="navRight">
+          <a
+            className="pill pillGreen"
+            href={`https://wa.me/91${phone1}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Order on WhatsApp
+          </a>
+
+          <a className="pill pillBlue" href={`tel:${phone1}`}>
+            Call Now
+          </a>
+
+          <div className="cartMini">
+            <span className="cartText">
+              Cart: <b>{cartCount}</b> items • Total: <b>₹{total}</b>
+            </span>
+            <Link to="/cart" className="cartIcon" aria-label="Cart">
+              🛒
+            </Link>
+          </div>
+        </div>
       </div>
-    </nav>
 
-    <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-  </>
-);
+      {/* Secondary nav links */}
+      <nav className="navLinks">
+        <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
+          Home
+        </NavLink>
+        <NavLink to="/shop" className={({ isActive }) => (isActive ? "active" : "")}>
+          Shop
+        </NavLink>
+        <NavLink to="/contact" className={({ isActive }) => (isActive ? "active" : "")}>
+          Contact
+        </NavLink>
+        <NavLink to="/track" className={({ isActive }) => (isActive ? "active" : "")}>
+          Track
+        </NavLink>
 
-const styles = {
-  navbar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '15px 30px',
-    backgroundColor: '#007bff',
-    color: '#fff',
-  },
-  logoLink: {
-    display: 'flex',
-    alignItems: 'center',
-    textDecoration: 'none',
-  },
-  logoImg: {
-    height: 42,
-    width: 'auto',
-    display: 'block',
-  },
-  navLinks: {
-    display: 'flex',
-    gap: '20px',
-    alignItems: 'center',
-  },
-  link: {
-    color: '#fff',
-    textDecoration: 'none',
-    fontSize: '16px',
-  },
-  cartButton: {
-    padding: '8px 15px',
-    backgroundColor: '#fff',
-    color: '#007bff',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-  },
-};
-
-export default Navbar;
+        {isShop && (
+          <span className="navHint">Same-day delivery • COD/UPI available</span>
+        )}
+      </nav>
+    </header>
+  );
+}

@@ -57,112 +57,177 @@ main{
 a{ color: inherit; }
 button{ font-family: inherit; }
 
-/* =========================================================
-   NAVBAR (Premium Glass + Ocean Gradient)
-   Use: <nav className="navbar"> ... </nav>
-========================================================= */
-
-.navbar{
+/* =========================
+   PREMIUM HEADER / NAVBAR
+========================= */
+.siteHeader{
   position: sticky;
   top: 0;
   z-index: 50;
+  background: linear-gradient(90deg, #003566 0%, #0077b6 60%, #00b4d8 120%);
+  border-bottom: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.10);
+}
 
-  display: flex;
-  justify-content: space-between;
+.navShell{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: 220px 1fr auto;
+  gap: 14px;
   align-items: center;
-  gap: 16px;
-
-  padding: 14px 22px;
-
-  background:
-    linear-gradient(90deg,
-      rgba(0,29,61,0.98) 0%,
-      rgba(0,53,102,0.98) 45%,
-      rgba(0,180,216,0.92) 100%);
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  border-bottom: 1px solid rgba(255,255,255,0.14);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.18);
 }
 
-.logo{
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.logo img{
-  height: 68px;   /* ✅ BIGGER logo */
-  width: auto;
-  display: block;
-  filter: drop-shadow(0 12px 18px rgba(0,0,0,0.28));
-}
-
-.navLinks{
+/* Brand */
+.brand{
   display:flex;
-  gap: 18px;
   align-items:center;
-}
-
-.navLink{
-  color: rgba(255,255,255,0.92);
+  gap: 10px;
   text-decoration:none;
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: 0.1px;
+  color: white;
+  font-weight: 950;
+}
+.brandMark{
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display:grid;
+  place-items:center;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.20);
+}
+.brandText{
+  font-size: 18px;
+  letter-spacing: -0.2px;
 }
 
-.navLink:hover{ opacity: 0.92; }
-
-.cartButton{
-  padding: 10px 16px;
-  background: rgba(255,255,255,0.96);
-  color: var(--ocean-800);
-
-  border: 1px solid rgba(255,255,255,0.35);
-  border-radius: 999px;
-
-  cursor: pointer;
-  font-weight: 900;
-  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
-
-  transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+/* Search */
+.navSearch{
+  display:flex;
+  align-items:center;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 14px;
+  overflow:hidden;
 }
-
-.cartButton:hover{
-  transform: translateY(-1px);
-  opacity: 0.98;
-}
-
-.cartButton:active{
-  transform: translateY(0px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.16);
-}
-
-.cartButton:focus{
+.navSearch input{
+  flex:1;
+  border: none;
+  background: transparent;
+  color: white;
+  padding: 10px 12px;
   outline: none;
-  box-shadow: 0 0 0 4px rgba(0,180,216,0.20), 0 10px 22px rgba(0,0,0,0.18);
+  font-weight: 650;
+}
+.navSearch input::placeholder{
+  color: rgba(255,255,255,0.75);
+}
+.navSearch button{
+  border:none;
+  background: rgba(255,255,255,0.18);
+  color:white;
+  padding: 10px 12px;
+  cursor:pointer;
 }
 
-/* Mobile navbar */
-@media (max-width: 640px){
-  .navbar{
+/* Right side */
+.navRight{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  text-decoration:none;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  border: 1px solid rgba(255,255,255,0.20);
+  box-shadow: 0 10px 18px rgba(0,0,0,0.12);
+  white-space: nowrap;
+}
+.pillGreen{
+  background: rgba(28, 191, 106, 0.92);
+  color: white;
+}
+.pillBlue{
+  background: rgba(0,0,0,0.18);
+  color: white;
+}
+
+.cartMini{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.cartText{
+  color: rgba(255,255,255,0.92);
+  font-weight: 650;
+  font-size: 13px;
+}
+.cartIcon{
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display:grid;
+  place-items:center;
+  background: rgba(255,255,255,0.16);
+  color: white;
+  text-decoration:none;
+}
+
+/* Links row */
+.navLinks{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 16px 12px;
+  display:flex;
+  align-items:center;
+  gap: 14px;
+}
+.navLinks a{
+  color: rgba(255,255,255,0.86);
+  text-decoration:none;
+  font-weight: 850;
+  padding: 8px 10px;
+  border-radius: 12px;
+}
+.navLinks a:hover{
+  background: rgba(255,255,255,0.14);
+}
+.navLinks a.active{
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.20);
+}
+.navHint{
+  margin-left: auto;
+  color: rgba(255,255,255,0.80);
+  font-weight: 650;
+  font-size: 12.5px;
+}
+
+/* Mobile */
+@media (max-width: 900px){
+  .navShell{
+    grid-template-columns: 1fr;
+  }
+  .navRight{
     flex-wrap: wrap;
-    padding: 12px 14px;
-    gap: 12px;
-  }
-  .logo img{ height: 56px; }
-  .navLinks{
-    width: 100%;
     justify-content: space-between;
-    gap: 12px;
   }
-  .navLink{ font-size: 14px; }
-  .cartButton{ padding: 9px 14px; }
+  .navHint{
+    display:none;
+  }
 }
-
 /* =========================================================
    HERO (Premium)
    Use: <div className="hero">...</div>
