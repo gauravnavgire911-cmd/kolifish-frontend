@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCart } from '../Context/CartContext'; // Adjust relative path as needed
+import { useCart } from '../context/CartContext'; // Adjust relative path as needed
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
