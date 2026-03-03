@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ProductCard from "../components/ProductCard.jsx";
 
-const Shop = () => {
+const API_BASE = import.meta.env.VITE_API_BASE;
+
+export default function Shop() {
   const [products, setProducts] = useState([]);
-  const [filters, setFilters] = useState({ search: "", type: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -14,56 +15,35 @@ const Shop = () => {
         setLoading(true);
         setError("");
 
-        const params = {};
-        if (filters.search) params.search = filters.search;
-        if (filters.type) params.type = filters.type;
+        const res = await axios.get(`${API_BASE}/api/products`);
 
-        const res = await axios.get("https://kolifish-backend.onrender.com/api/products", { params });
+        // backend returns an array
+        const data = res.data;
+        const list = Array.isArray(data) ? data : data?.products ?? [];
 
-        setProducts(res.data.products || []);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setError("Failed to load products. Please try again later.");
+        setProducts(list);
+      } catch (e) {
+        setError(
+          e?.response?.data?.message || e?.message || "Failed to fetch products"
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, [filters]);
+  }, []);
 
   return (
-    <div className="shop" style={{ padding: "16px" }}>
-      <input
-        type="text"
-        placeholder="Search by name or description"
-        value={filters.search}
-        onChange={(e) => setFilters((prev) => ({ ...prev, search: e.target.value }))}
-        style={{ marginBottom: "10px", padding: "8px", width: "100%" }}
-      />
-
-      <select
-        value={filters.type}
-        onChange={(e) => setFilters((prev) => ({ ...prev, type: e.target.value }))}
-        style={{ marginBottom: "20px", padding: "8px", width: "200px" }}
-      >
-        <option value="">All Types</option>
-        <option value="Freshwater">Freshwater</option>
-        <option value="Seawater">Seawater</option>
-      </select>
-
-      {loading && <p>Loading products...</p>}
+    <div style={{ padding: 16 }}>
+      {loading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <div className="products" style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-        {products.length > 0 ? (
-          products.map((p) => <ProductCard key={p._id} product={p} />)
-        ) : (
-          !loading && <p>No products found.</p>
-        )}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
+        {products.map((p) => (
+          <ProductCard key={p._id || p.id} product={p} />
+        ))}
       </div>
     </div>
   );
-};
-
-export default Shop;
+}

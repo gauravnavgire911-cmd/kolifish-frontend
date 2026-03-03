@@ -10,7 +10,7 @@ const Navbar = () => {
     <>
       <nav style={styles.navbar}>
         <div style={styles.logo}>
-          <h1>KoliFish</h1>
+          <img src="/logo.png" alt="Koli Fish" style={{ height: 42 }} />
         </div>
         <div style={styles.navLinks}>
           <a href="/" style={styles.link}>Home</a>
