@@ -503,3 +503,61 @@ button{ font-family: inherit; }
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
+/* =========================
+   FIX: Ribbon overlapping title
+========================= */
+.productCard .content,
+.product-card .content,
+.product-card .card-content{
+  padding-top: 56px !important; /* space for ribbon */
+}
+
+.ribbon{
+  top: 12px !important;
+  left: 12px !important;
+  z-index: 10 !important;
+  padding: 5px 10px !important;
+  font-size: 10.5px !important;
+}
+/* =========================
+   BIGGER PRODUCT CARDS
+========================= */
+.productsGrid{
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 22px !important;
+}
+
+.productCard,
+.product-card{
+  border-radius: 18px !important;
+}
+
+.productCard img,
+.product-card img{
+  height: 240px !important;
+}
+
+.productCard h3,
+.product-card h3{
+  font-size: 20px !important;
+  margin-top: 6px !important;
+}
+
+.productCard button,
+.product-card button{
+  padding: 14px 16px !important;
+  font-size: 15px !important;
+}
+/* =========================
+   PREMIUM PAGE BACKGROUND
+========================= */
+html, body{
+  height: 100%;
+}
+
+body{
+  background:
+    radial-gradient(1200px 520px at 50% -10%, rgba(0,180,216,0.18), transparent 60%),
+    radial-gradient(900px 480px at 10% 20%, rgba(0,119,182,0.12), transparent 62%),
+    linear-gradient(180deg, #f6fbff 0%, #ffffff 55%, #f8fbff 100%) !important;
+}
