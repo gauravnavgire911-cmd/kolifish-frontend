@@ -11,7 +11,7 @@ import Contact from "./pages/contact.jsx";
 import OrderTracking from "./pages/ordertracking.jsx";
 import ShopPage from "./pages/shop.jsx";
 // If you have home.jsx page, import it and use it for "/"
-import Home from "./pages/home.jsx";
+import Home from "./components/home.jsx";
 
 export default function App() {
   return (
