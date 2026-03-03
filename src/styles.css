@@ -342,11 +342,11 @@ button{ font-family: inherit; }
 
 .ribbon{
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 10px;
+  left: 10px;
   z-index: 2;
-  padding: 6px 12px;
-  font-size: 11px;
+  padding: 5px 10px;
+  font-size: 10.5px;
   font-weight: 950;
   letter-spacing: 0.35px;
   color: white;
