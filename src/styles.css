@@ -366,23 +366,66 @@ button{ font-family: inherit; }
   opacity: 0.25;
   pointer-events:none;
 }
-/* =========================================================
-   FOOTER (Premium)
-   Use: <footer className="footer">...</footer>
-========================================================= */
+/* =========================
+   PREMIUM FOOTER (FORCED STYLE)
+========================= */
 
-.footer{
-  margin-top: 46px;
-  padding: 26px 16px;
+.siteFooter{
+  margin-top: 60px;
+  padding: 45px 20px 20px;
+  background: linear-gradient(135deg, #003566, #0077b6) !important;
+  color: #ffffff !important;
+}
 
-  color: rgba(255,255,255,0.90);
-  background:
-    linear-gradient(90deg,
-      rgba(0,29,61,1) 0%,
-      rgba(0,53,102,1) 65%,
-      rgba(0,180,216,0.75) 100%);
+.footerInner{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr;
+  gap: 40px;
+}
 
+.footerLogo{
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.footerTag{
+  margin-top: 12px;
+  opacity: 0.8;
+}
+
+.footerCols{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.siteFooter h4{
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.siteFooter a{
+  display: block;
+  text-decoration: none;
+  color: rgba(255,255,255,0.85) !important;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.siteFooter a:hover{
+  color: #ffffff !important;
+}
+
+.footerBottom{
+  margin-top: 35px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255,255,255,0.2);
   text-align: center;
+  font-size: 13px;
+  opacity: 0.8;
 }
 
 /* =========================================================
