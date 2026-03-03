@@ -10,7 +10,7 @@ import {
   calcCartTotals,
 } from "./components/cartUtils";
 
-import Header from "./components/header.jsx";
+import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/footer.jsx";
 
 import AdminLogin from "./pages/adminlogin.jsx";
@@ -65,7 +65,7 @@ export default function App() {
 
   return (
     <div style={styles.app}>
-      <Header />
+      <Navbar />
 
       <TopNavigation cart={cart} cartCount={cartCount} totals={totals} />
 
