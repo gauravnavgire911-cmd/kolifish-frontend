@@ -20,7 +20,7 @@ import Contact from "./pages/contact.jsx";
 import OrderTracking from "./pages/ordertracking.jsx";
 import ShopPage from "./pages/shop.jsx";
 
-const WHATSAPP_NUMBER = "8600010942";
+const WHATSAPP_NUMBER = "8600010944";
 
 /* =========================
    Utility Functions
@@ -202,11 +202,16 @@ function ShopHome({ setCart }) {
 
 function HeroSection() {
   return (
-    <div style={styles.hero}>
-      <h1 style={{ margin: 0 }}>Fresh. Clean-Cut. Delivered.</h1>
-      <p style={{ marginTop: 8, marginBottom: 0, color: "#374151" }}>
-        90-minute delivery • Free delivery • COD / UPI / Card accepted
-      </p>
+    <div className="hero">
+      <h1>Fresh. Clean-Cut. Delivered.</h1>
+      <p>90-minute delivery • Free delivery • COD / UPI / Card</p>
+
+      <div className="badgeRow">
+        <span className="badge">✔ FSSAI Certified</span>
+        <span className="badge">✔ 100% Fresh Guarantee</span>
+        <span className="badge">✔ Same Day Delivery</span>
+        <span className="badge">✔ Hygienic Processing Unit</span>
+      </div>
     </div>
   );
 }
@@ -220,39 +225,43 @@ function ProductCard({ product, onAdd }) {
   const price = Math.round((product.pricePerKg || 0) * weightKg);
 
   return (
-    <div style={styles.card}>
-      {product.image ? (
+    <div className="productCard">
+
+      <div className="ribbon">Fresh Today</div>
+
+      {product.image && (
         <img
           src={product.image}
           alt={product.name}
-          style={styles.image}
           onError={(e) => (e.currentTarget.style.display = "none")}
         />
-      ) : null}
+      )}
 
-      <h3 style={{ margin: "10px 0 6px" }}>{product.name}</h3>
-      <p style={{ margin: 0, color: "#111827", fontWeight: 700 }}>
-        {formatINR(price)}{" "}
-        <span style={{ color: "#6b7280", fontWeight: 600, fontSize: 12 }}>
-          ({formatINR(product.pricePerKg)}/kg)
-        </span>
-      </p>
+      <div className="content">
+        <h3>{product.name}</h3>
 
-      <select
-        value={weightKg}
-        onChange={(e) => setWeightKg(Number(e.target.value))}
-        style={styles.select}
-      >
-        {WEIGHTS.map((w) => (
-          <option key={w.kg} value={w.kg}>
-            {w.label}
-          </option>
-        ))}
-      </select>
+        <div className="meta">
+          <span className="price">{formatINR(price)}</span>
+          <span className="subPrice">
+            {formatINR(product.pricePerKg)}/kg
+          </span>
+        </div>
 
-      <button onClick={() => onAdd(weightKg)} style={styles.addBtn}>
-        Add to Cart
-      </button>
+        <select
+          value={weightKg}
+          onChange={(e) => setWeightKg(Number(e.target.value))}
+        >
+          {WEIGHTS.map((w) => (
+            <option key={w.kg} value={w.kg}>
+              {w.label}
+            </option>
+          ))}
+        </select>
+
+        <button onClick={() => onAdd(weightKg)}>
+          Add to Cart
+        </button>
+      </div>
     </div>
   );
 }

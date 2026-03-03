@@ -1,24 +1,397 @@
-.product-card {
-  border: 1px solid #ddd;
-  padding: 10px;
-  width: 220px;
-  text-align: center;
-  border-radius: 6px;
+/* =========================================================
+   KOLIFISH — PREMIUM OCEAN THEME (FINAL)
+   Paste this entire file into styles.css
+========================================================= */
+
+:root{
+  --bg: #f5fbff;
+  --text: #07121f;
+  --muted: #5b6b84;
+
+  --ocean-950:#001023;
+  --ocean-900:#001d3d;
+  --ocean-800:#003566;
+  --ocean-700:#00509d;
+  --ocean-600:#0077b6;
+  --ocean-500:#00b4d8;
+
+  --card:#ffffff;
+  --border: rgba(15, 23, 42, 0.08);
+  --shadow: 0 18px 45px rgba(2, 28, 69, 0.10);
+  --shadow-strong: 0 26px 65px rgba(2, 28, 69, 0.14);
+  --radius: 18px;
 }
-.product-card img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 4px;
+
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
+
+body{
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background:
+    radial-gradient(1200px 800px at 12% 10%, rgba(0,180,216,0.18), transparent 55%),
+    radial-gradient(900px 600px at 86% 0%, rgba(0,119,182,0.16), transparent 55%),
+    radial-gradient(900px 700px at 30% 95%, rgba(0,53,102,0.10), transparent 50%),
+    var(--bg);
+
+  color: var(--text);
 }
-.product-card button {
-  margin-top: 10px;
-  padding: 8px 12px;
-  background-color: #0077cc;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
+
+/* Optional container helper */
+.container{
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 22px 18px;
+}
+
+/* Improve default main spacing even if you use inline styles */
+main{
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 22px 18px;
+}
+
+a{ color: inherit; }
+button{ font-family: inherit; }
+
+/* =========================================================
+   NAVBAR (Premium Glass + Ocean Gradient)
+   Use: <nav className="navbar"> ... </nav>
+========================================================= */
+
+.navbar{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  padding: 14px 22px;
+
+  background:
+    linear-gradient(90deg,
+      rgba(0,29,61,0.98) 0%,
+      rgba(0,53,102,0.98) 45%,
+      rgba(0,180,216,0.92) 100%);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+}
+
+.logo{
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo img{
+  height: 68px;   /* ✅ BIGGER logo */
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 12px 18px rgba(0,0,0,0.28));
+}
+
+.navLinks{
+  display:flex;
+  gap: 18px;
+  align-items:center;
+}
+
+.navLink{
+  color: rgba(255,255,255,0.92);
+  text-decoration:none;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.1px;
+}
+
+.navLink:hover{ opacity: 0.92; }
+
+.cartButton{
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.96);
+  color: var(--ocean-800);
+
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 999px;
+
   cursor: pointer;
+  font-weight: 900;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+
+  transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
 }
-.product-card button:hover {
-  background-color: #005fa3;
+
+.cartButton:hover{
+  transform: translateY(-1px);
+  opacity: 0.98;
+}
+
+.cartButton:active{
+  transform: translateY(0px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.16);
+}
+
+.cartButton:focus{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0,180,216,0.20), 0 10px 22px rgba(0,0,0,0.18);
+}
+
+/* Mobile navbar */
+@media (max-width: 640px){
+  .navbar{
+    flex-wrap: wrap;
+    padding: 12px 14px;
+    gap: 12px;
+  }
+  .logo img{ height: 56px; }
+  .navLinks{
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .navLink{ font-size: 14px; }
+  .cartButton{ padding: 9px 14px; }
+}
+
+/* =========================================================
+   HERO (Premium)
+   Use: <div className="hero">...</div>
+========================================================= */
+
+.hero{
+  border-radius: 20px;
+  padding: 26px;
+  color: white;
+
+  background:
+    linear-gradient(135deg,
+      rgba(0,29,61,0.98) 0%,
+      rgba(0,119,182,0.96) 55%,
+      rgba(0,180,216,0.90) 100%);
+
+  box-shadow: 0 22px 55px rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+.hero h1{
+  margin: 0;
+  font-size: 38px;
+  letter-spacing: -0.6px;
+}
+
+.hero p{
+  margin: 10px 0 0;
+  opacity: 0.9;
+}
+
+/* Optional badge row under hero */
+.badgeRow{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 7px 10px;
+  border-radius: 999px;
+
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.20);
+  color: rgba(255,255,255,0.92);
+}
+
+
+
+/* =========================
+   PRODUCT GRID + CARD (ULTRA PREMIUM)
+   Supports both .productCard and .product-card
+========================= */
+
+.productsGrid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+/* Card */
+.productCard,
+.product-card{
+  position: relative;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition:
+    transform 220ms cubic-bezier(.2,.8,.2,1),
+    box-shadow 220ms cubic-bezier(.2,.8,.2,1),
+    border-color 220ms ease;
+}
+
+/* Premium hover */
+.productCard:hover,
+.product-card:hover{
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-strong);
+  border-color: rgba(0,180,216,0.28);
+}
+
+/* Image (with subtle zoom) */
+.productCard img,
+.product-card img{
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background: #eef6ff;
+  display: block;
+  transform: scale(1);
+  transition: transform 380ms cubic-bezier(.2,.8,.2,1), filter 220ms ease;
+}
+
+.productCard:hover img,
+.product-card:hover img{
+  transform: scale(1.04);
+  filter: saturate(1.05) contrast(1.03);
+}
+
+/* Content wrapper: supports both your .content and .card-content */
+.productCard .content,
+.product-card .card-content,
+.product-card .content{
+  padding: 14px 14px 16px;
+}
+
+/* Title */
+.productCard h3,
+.product-card h3{
+  margin: 10px 0 6px;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+/* Price */
+.productCard .price,
+.product-card .price{
+  font-weight: 950;
+  color: var(--ocean-950);
+  margin: 0;
+}
+
+/* If you later add per-kg sub price */
+.subPrice{
+  color: var(--muted);
+  font-weight: 650;
+  font-size: 12px;
+}
+
+/* Button */
+.productCard button,
+.product-card button{
+  margin-top: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  color: white;
+  font-weight: 950;
+  letter-spacing: 0.2px;
+  background: linear-gradient(90deg, #003566 0%, #0077b6 55%, #00b4d8 100%);
+  box-shadow: 0 14px 26px rgba(0,53,102,0.20);
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+}
+
+.productCard button:hover,
+.product-card button:hover{
+  transform: translateY(-1px);
+  opacity: 0.98;
+}
+
+.productCard button:active,
+.product-card button:active{
+  transform: translateY(0px);
+  box-shadow: 0 10px 18px rgba(0,53,102,0.18);
+}
+
+.productCard button:focus,
+.product-card button:focus{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0,180,216,0.18), 0 14px 26px rgba(0,53,102,0.20);
+}
+
+/* =========================
+   RIBBON: Fresh Today
+========================= */
+
+.ribbon{
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.35px;
+  color: white;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0077b6 0%, #00b4d8 100%);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.22);
+}
+
+/* Optional: small shine effect */
+.ribbon::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:999px;
+  background: linear-gradient(120deg, rgba(255,255,255,0.35), transparent 55%);
+  opacity: 0.25;
+  pointer-events:none;
+}
+/* =========================================================
+   FOOTER (Premium)
+   Use: <footer className="footer">...</footer>
+========================================================= */
+
+.footer{
+  margin-top: 46px;
+  padding: 26px 16px;
+
+  color: rgba(255,255,255,0.90);
+  background:
+    linear-gradient(90deg,
+      rgba(0,29,61,1) 0%,
+      rgba(0,53,102,1) 65%,
+      rgba(0,180,216,0.75) 100%);
+
+  text-align: center;
+}
+
+/* =========================================================
+   Small utility helpers
+========================================================= */
+.muted{ color: var(--muted); }
+.card{
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }

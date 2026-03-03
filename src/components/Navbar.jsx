@@ -8,29 +8,28 @@ const Navbar = () => {
   const { cartCount } = useCart();
 
   return (
-    <>
-      <nav style={styles.navbar}>
-        <Link to="/" style={styles.logoLink}>
-          <img src="/logo.png" alt="Koli Fish" style={styles.logoImg} />
-        </Link>
+  <>
+    <nav className="navbar">
+      <Link to="/" className="logo">
+        <img src="/logo.png" alt="Koli Fish" />
+      </Link>
 
-        <div style={styles.navLinks}>
-          <Link to="/" style={styles.link}>Home</Link>
-          <Link to="/products" style={styles.link}>Products</Link>
+      <div className="navLinks">
+        <Link to="/" className="navLink">Home</Link>
+        <Link to="/products" className="navLink">Products</Link>
 
-          <button
-            style={styles.cartButton}
-            onClick={() => setIsCartOpen(true)}
-          >
-            🛒 Cart ({cartCount})
-          </button>
-        </div>
-      </nav>
+        <button
+          className="cartButton"
+          onClick={() => setIsCartOpen(true)}
+        >
+          🛒 Cart ({cartCount})
+        </button>
+      </div>
+    </nav>
 
-      <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-    </>
-  );
-};
+    <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+  </>
+);
 
 const styles = {
   navbar: {

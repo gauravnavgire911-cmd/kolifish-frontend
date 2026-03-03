@@ -39,7 +39,7 @@ export default function Shop() {
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
+      <div className="productsGrid">
         {products.map((p) => (
           <ProductCard key={p._id || p.id} product={p} />
         ))}
