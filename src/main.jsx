@@ -4,15 +4,15 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 
-// Import CartProvider from your Context folder
-import { CartProvider } from "./Context/CartContext.jsx"; // adjust path if necessary
+// IMPORTANT: keep folder name consistent (prefer "context" lowercase)
+import { CartProvider } from "./context/CartContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <CartProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <CartProvider>
         <App />
-      </BrowserRouter>
-    </CartProvider>
+      </CartProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

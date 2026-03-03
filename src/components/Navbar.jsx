@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import Cart from './Cart';
 
@@ -9,12 +10,14 @@ const Navbar = () => {
   return (
     <>
       <nav style={styles.navbar}>
-        <div style={styles.logo}>
-          <img src="/logo.png" alt="Koli Fish" style={{ height: 42 }} />
-        </div>
+        <Link to="/" style={styles.logoLink}>
+          <img src="/logo.png" alt="Koli Fish" style={styles.logoImg} />
+        </Link>
+
         <div style={styles.navLinks}>
-          <a href="/" style={styles.link}>Home</a>
-          <a href="/products" style={styles.link}>Products</a>
+          <Link to="/" style={styles.link}>Home</Link>
+          <Link to="/products" style={styles.link}>Products</Link>
+
           <button
             style={styles.cartButton}
             onClick={() => setIsCartOpen(true)}
@@ -38,9 +41,15 @@ const styles = {
     backgroundColor: '#007bff',
     color: '#fff',
   },
-  logo: {
-    fontSize: '24px',
-    fontWeight: 'bold',
+  logoLink: {
+    display: 'flex',
+    alignItems: 'center',
+    textDecoration: 'none',
+  },
+  logoImg: {
+    height: 42,
+    width: 'auto',
+    display: 'block',
   },
   navLinks: {
     display: 'flex',
