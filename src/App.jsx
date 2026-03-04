@@ -2,13 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { getProducts } from "./api";
 
-import {
-  WEIGHTS,
-  addToCart,
-  calcItemTotal,
-  loadCart,
-  calcCartTotals,
-} from "./components/cartUtils";
+import { WEIGHTS, addToCart, calcItemTotal, loadCart, calcCartTotals } from "./components/cartUtils";
 
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/footer.jsx";
@@ -25,7 +19,6 @@ const WHATSAPP_NUMBER = "8600010944";
 /* =========================
    Utility Functions
 ========================= */
-
 const formatINR = (n) => `₹${Number(n || 0)}`;
 
 const createWhatsAppLink = (cart) => {
@@ -50,10 +43,9 @@ const createWhatsAppLink = (cart) => {
 /* =========================
    MAIN APP
 ========================= */
-
 export default function App() {
   const [cart, setCart] = useState(() => loadCart());
-  const [search, setSearch] = useState(""); // ✅ move here
+  const [search, setSearch] = useState("");
 
   const cartCount = useMemo(
     () => cart.reduce((sum, item) => sum + (item.qty || 0), 0),
@@ -75,9 +67,13 @@ export default function App() {
         onSearchChange={setSearch}
       />
 
+      {/* ✅ NO inline styles here (lets premium body background show) */}
       <main className="container">
         <Routes>
-          <Route path="/" element={<ShopHome cart={cart} setCart={setCart} search={search} />} />
+          <Route
+            path="/"
+            element={<ShopHome cart={cart} setCart={setCart} search={search} />}
+          />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
@@ -171,7 +167,6 @@ function ShopHome({ setCart, search = "" }) {
 /* =========================
    HERO SECTION
 ========================= */
-
 function HeroSection() {
   return (
     <div className="hero">
@@ -191,14 +186,12 @@ function HeroSection() {
 /* =========================
    PRODUCT CARD
 ========================= */
-
 function ProductCard({ product, onAdd }) {
   const [weightKg, setWeightKg] = useState(0.5);
   const price = Math.round((product.pricePerKg || 0) * weightKg);
 
   return (
     <div className="productCard">
-
       <div className="ribbon">Fresh Today</div>
 
       {product.image && (
@@ -214,15 +207,10 @@ function ProductCard({ product, onAdd }) {
 
         <div className="meta">
           <span className="price">{formatINR(price)}</span>
-          <span className="subPrice">
-            {formatINR(product.pricePerKg)}/kg
-          </span>
+          <span className="subPrice">{formatINR(product.pricePerKg)}/kg</span>
         </div>
 
-        <select
-          value={weightKg}
-          onChange={(e) => setWeightKg(Number(e.target.value))}
-        >
+        <select value={weightKg} onChange={(e) => setWeightKg(Number(e.target.value))}>
           {WEIGHTS.map((w) => (
             <option key={w.kg} value={w.kg}>
               {w.label}
@@ -230,107 +218,17 @@ function ProductCard({ product, onAdd }) {
           ))}
         </select>
 
-        <button onClick={() => onAdd(weightKg)}>
-          Add to Cart
-        </button>
+        <button onClick={() => onAdd(weightKg)}>Add to Cart</button>
       </div>
     </div>
   );
 }
 
 /* =========================
-   STYLES
+   NOTE
 ========================= */
-
-const styles = {
-  app: {
-    fontFamily: "system-ui",
-    background: "#f7fafc",
-    minHeight: "100vh",
-  },
-  main: {
-    maxWidth: 1100,
-    margin: "0 auto",
-    padding: 20,
-  },
-  navBar: {
-    background: "white",
-    borderBottom: "1px solid #eee",
-    padding: 10,
-    display: "flex",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-    gap: 12,
-    alignItems: "center",
-  },
-  navLinks: {
-    display: "flex",
-    gap: 15,
-    flexWrap: "wrap",
-  },
-  navActions: {
-    display: "flex",
-    gap: 10,
-    alignItems: "center",
-    flexWrap: "wrap",
-  },
-  whatsappBtn: {
-    background: "#16a34a",
-    color: "white",
-    padding: "8px 12px",
-    borderRadius: 8,
-    textDecoration: "none",
-    fontWeight: 700,
-  },
-  callBtn: {
-    background: "#0b5ed7",
-    color: "white",
-    padding: "8px 12px",
-    borderRadius: 8,
-    textDecoration: "none",
-    fontWeight: 700,
-  },
-  hero: {
-    background: "white",
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 20,
-    boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-    gap: 15,
-  },
-  card: {
-    background: "white",
-    padding: 15,
-    borderRadius: 12,
-    border: "1px solid #e5e7eb",
-  },
-  image: {
-    width: "100%",
-    height: 160,
-    objectFit: "cover",
-    borderRadius: 10,
-    background: "#f3f4f6",
-  },
-  select: {
-    marginTop: 10,
-    width: "100%",
-    padding: "10px 10px",
-    borderRadius: 10,
-    border: "1px solid #e5e7eb",
-  },
-  addBtn: {
-    marginTop: 10,
-    background: "#0b5ed7",
-    color: "white",
-    padding: "10px 12px",
-    borderRadius: 10,
-    border: "none",
-    cursor: "pointer",
-    width: "100%",
-    fontWeight: 800,
-  },
-};
+/**
+ * ✅ Removed old inline "styles" object entirely.
+ * Reason: inline background was overriding your premium CSS background.
+ * Keep all styling inside src/styles.css (premium theme).
+ */
