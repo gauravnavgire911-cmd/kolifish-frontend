@@ -1,6 +1,5 @@
 /* =========================================================
-   KOLIFISH — PREMIUM OCEAN THEME (FINAL)
-   Paste this entire file into styles.css
+   KOLIFISH — PREMIUM OCEAN THEME (CLEAN FINAL)
 ========================================================= */
 
 :root{
@@ -30,36 +29,26 @@ body{
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: var(--text);
 
   background:
-    radial-gradient(1200px 800px at 12% 10%, rgba(0,180,216,0.18), transparent 55%),
-    radial-gradient(900px 600px at 86% 0%, rgba(0,119,182,0.16), transparent 55%),
-    radial-gradient(900px 700px at 30% 95%, rgba(0,53,102,0.10), transparent 50%),
-    var(--bg);
-
-  color: var(--text);
-}
-
-/* Optional container helper */
-.container{
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 22px 18px;
-}
-
-/* Improve default main spacing even if you use inline styles */
-main{
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 22px 18px;
+    radial-gradient(1200px 520px at 50% -10%, rgba(0,180,216,0.18), transparent 60%),
+    radial-gradient(900px 480px at 10% 20%, rgba(0,119,182,0.12), transparent 62%),
+    linear-gradient(180deg, #f6fbff 0%, #ffffff 55%, #f8fbff 100%);
 }
 
 a{ color: inherit; }
 button{ font-family: inherit; }
 
-/* =========================
-   PREMIUM HEADER / NAVBAR
-========================= */
+.container, main{
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 22px 18px;
+}
+
+/* =========================================================
+   PREMIUM HEADER / NAVBAR (matches Navbar.jsx)
+========================================================= */
 .siteHeader{
   position: sticky;
   top: 0;
@@ -79,7 +68,6 @@ button{ font-family: inherit; }
   align-items: center;
 }
 
-/* Brand */
 .brand{
   display:flex;
   align-items:center;
@@ -215,35 +203,24 @@ button{ font-family: inherit; }
   font-size: 12.5px;
 }
 
-/* Mobile */
 @media (max-width: 900px){
-  .navShell{
-    grid-template-columns: 1fr;
-  }
-  .navRight{
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  .navHint{
-    display:none;
-  }
+  .navShell{ grid-template-columns: 1fr; }
+  .navRight{ flex-wrap: wrap; justify-content: space-between; }
+  .navHint{ display:none; }
 }
-/* =========================================================
-   HERO (Premium)
-   Use: <div className="hero">...</div>
-========================================================= */
 
+/* =========================================================
+   HERO
+========================================================= */
 .hero{
   border-radius: 20px;
   padding: 26px;
   color: white;
-
   background:
     linear-gradient(135deg,
       rgba(0,29,61,0.98) 0%,
       rgba(0,119,182,0.96) 55%,
       rgba(0,180,216,0.90) 100%);
-
   box-shadow: 0 22px 55px rgba(0,0,0,0.18);
   border: 1px solid rgba(255,255,255,0.18);
 }
@@ -259,7 +236,6 @@ button{ font-family: inherit; }
   opacity: 0.9;
 }
 
-/* Optional badge row under hero */
 .badgeRow{
   display:flex;
   flex-wrap: wrap;
@@ -275,32 +251,26 @@ button{ font-family: inherit; }
   font-weight: 900;
   padding: 7px 10px;
   border-radius: 999px;
-
   background: rgba(255,255,255,0.14);
   border: 1px solid rgba(255,255,255,0.20);
   color: rgba(255,255,255,0.92);
 }
 
-
-
-/* =========================
-   PRODUCT GRID + CARD (ULTRA PREMIUM)
-   Supports both .productCard and .product-card
-========================= */
-
+/* =========================================================
+   PRODUCT GRID + CARDS (BIGGER + PREMIUM)
+========================================================= */
 .productsGrid{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
 }
 
-/* Card */
 .productCard,
 .product-card{
   position: relative;
   background: rgba(255,255,255,0.92);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 18px;
   overflow: hidden;
   box-shadow: var(--shadow);
   transition:
@@ -309,7 +279,6 @@ button{ font-family: inherit; }
     border-color 220ms ease;
 }
 
-/* Premium hover */
 .productCard:hover,
 .product-card:hover{
   transform: translateY(-6px);
@@ -317,11 +286,10 @@ button{ font-family: inherit; }
   border-color: rgba(0,180,216,0.28);
 }
 
-/* Image (with subtle zoom) */
 .productCard img,
 .product-card img{
   width: 100%;
-  height: 200px;
+  height: 240px;
   object-fit: cover;
   background: #eef6ff;
   display: block;
@@ -335,23 +303,21 @@ button{ font-family: inherit; }
   filter: saturate(1.05) contrast(1.03);
 }
 
-/* Content wrapper: supports both your .content and .card-content */
 .productCard .content,
 .product-card .card-content,
 .product-card .content{
-  padding: 14px 14px 16px;
+  padding: 18px 18px 20px;
+  padding-top: 56px;
 }
 
-/* Title */
 .productCard h3,
 .product-card h3{
-  margin: 10px 0 6px;
-  font-size: 18px;
+  margin: 6px 0 8px;
+  font-size: 20px;
   letter-spacing: -0.3px;
   line-height: 1.2;
 }
 
-/* Price */
 .productCard .price,
 .product-card .price{
   font-weight: 950;
@@ -359,57 +325,44 @@ button{ font-family: inherit; }
   margin: 0;
 }
 
-/* If you later add per-kg sub price */
 .subPrice{
   color: var(--muted);
   font-weight: 650;
   font-size: 12px;
 }
 
-/* Button */
 .productCard button,
 .product-card button{
   margin-top: 12px;
   width: 100%;
-  padding: 12px 14px;
+  padding: 14px 16px;
   border: none;
   border-radius: 14px;
   cursor: pointer;
   color: white;
   font-weight: 950;
   letter-spacing: 0.2px;
+  font-size: 15px;
   background: linear-gradient(90deg, #003566 0%, #0077b6 55%, #00b4d8 100%);
   box-shadow: 0 14px 26px rgba(0,53,102,0.20);
   transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
 }
-
 .productCard button:hover,
-.product-card button:hover{
-  transform: translateY(-1px);
-  opacity: 0.98;
-}
-
+.product-card button:hover{ transform: translateY(-1px); opacity: 0.98; }
 .productCard button:active,
-.product-card button:active{
-  transform: translateY(0px);
-  box-shadow: 0 10px 18px rgba(0,53,102,0.18);
-}
-
+.product-card button:active{ transform: translateY(0px); box-shadow: 0 10px 18px rgba(0,53,102,0.18); }
 .productCard button:focus,
 .product-card button:focus{
   outline: none;
   box-shadow: 0 0 0 4px rgba(0,180,216,0.18), 0 14px 26px rgba(0,53,102,0.20);
 }
 
-/* =========================
-   RIBBON: Fresh Today
-========================= */
-
+/* Ribbon */
 .ribbon{
   position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 2;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
   padding: 5px 10px;
   font-size: 10.5px;
   font-weight: 950;
@@ -420,8 +373,6 @@ button{ font-family: inherit; }
   box-shadow: 0 10px 22px rgba(0,0,0,0.18);
   border: 1px solid rgba(255,255,255,0.22);
 }
-
-/* Optional: small shine effect */
 .ribbon::after{
   content:"";
   position:absolute;
@@ -431,15 +382,15 @@ button{ font-family: inherit; }
   opacity: 0.25;
   pointer-events:none;
 }
-/* =========================
-   PREMIUM FOOTER (FORCED STYLE)
-========================= */
 
+/* =========================================================
+   FOOTER
+========================================================= */
 .siteFooter{
   margin-top: 60px;
   padding: 45px 20px 20px;
-  background: linear-gradient(135deg, #003566, #0077b6) !important;
-  color: #ffffff !important;
+  background: linear-gradient(135deg, #003566, #0077b6);
+  color: #ffffff;
 }
 
 .footerInner{
@@ -475,14 +426,12 @@ button{ font-family: inherit; }
 .siteFooter a{
   display: block;
   text-decoration: none;
-  color: rgba(255,255,255,0.85) !important;
+  color: rgba(255,255,255,0.85);
   margin-bottom: 8px;
   font-weight: 600;
 }
 
-.siteFooter a:hover{
-  color: #ffffff !important;
-}
+.siteFooter a:hover{ color: #ffffff; }
 
 .footerBottom{
   margin-top: 35px;
@@ -493,71 +442,10 @@ button{ font-family: inherit; }
   opacity: 0.8;
 }
 
-/* =========================================================
-   Small utility helpers
-========================================================= */
 .muted{ color: var(--muted); }
 .card{
   background: rgba(255,255,255,0.92);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-}
-/* =========================
-   FIX: Ribbon overlapping title
-========================= */
-.productCard .content,
-.product-card .content,
-.product-card .card-content{
-  padding-top: 56px !important; /* space for ribbon */
-}
-
-.ribbon{
-  top: 12px !important;
-  left: 12px !important;
-  z-index: 10 !important;
-  padding: 5px 10px !important;
-  font-size: 10.5px !important;
-}
-/* =========================
-   BIGGER PRODUCT CARDS
-========================= */
-.productsGrid{
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
-  gap: 22px !important;
-}
-
-.productCard,
-.product-card{
-  border-radius: 18px !important;
-}
-
-.productCard img,
-.product-card img{
-  height: 240px !important;
-}
-
-.productCard h3,
-.product-card h3{
-  font-size: 20px !important;
-  margin-top: 6px !important;
-}
-
-.productCard button,
-.product-card button{
-  padding: 14px 16px !important;
-  font-size: 15px !important;
-}
-/* =========================
-   PREMIUM PAGE BACKGROUND
-========================= */
-html, body{
-  height: 100%;
-}
-
-body{
-  background:
-    radial-gradient(1200px 520px at 50% -10%, rgba(0,180,216,0.18), transparent 60%),
-    radial-gradient(900px 480px at 10% 20%, rgba(0,119,182,0.12), transparent 62%),
-    linear-gradient(180deg, #f6fbff 0%, #ffffff 55%, #f8fbff 100%) !important;
 }

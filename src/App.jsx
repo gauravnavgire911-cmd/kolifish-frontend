@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Routes, Route, Navigate, Link } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { getProducts } from "./api";
 
 import {
@@ -10,7 +10,7 @@ import {
   calcCartTotals,
 } from "./components/cartUtils";
 
-import Header from "./components/header.jsx";
+import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/footer.jsx";
 
 import AdminLogin from "./pages/adminlogin.jsx";
@@ -44,9 +44,7 @@ const createWhatsAppLink = (cart) => {
     `Payment: COD / UPI / Card\n\n` +
     `Name:\nPhone:\nAddress:\nLandmark:`;
 
-  return `https://wa.me/91${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    message
-  )}`;
+  return `https://wa.me/91${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 };
 
 /* =========================
@@ -55,6 +53,7 @@ const createWhatsAppLink = (cart) => {
 
 export default function App() {
   const [cart, setCart] = useState(() => loadCart());
+  const [search, setSearch] = useState(""); // ✅ move here
 
   const cartCount = useMemo(
     () => cart.reduce((sum, item) => sum + (item.qty || 0), 0),
@@ -64,75 +63,40 @@ export default function App() {
   const totals = useMemo(() => calcCartTotals(cart), [cart]);
 
   return (
-    <div style={styles.app}>
-      <Header />
+    <>
+      <Navbar
+        cartCount={cartCount}
+        total={totals.total}
+        phone1="8600010942"
+        phone2="8600010944"
+        whatsappLink1={createWhatsAppLink(cart)}
+        whatsappLink2={createWhatsAppLink(cart)}
+        searchValue={search}
+        onSearchChange={setSearch}
+      />
 
-      <TopNavigation cart={cart} cartCount={cartCount} totals={totals} />
-
-      <main style={styles.main}>
+      <main className="container">
         <Routes>
-          <Route path="/" element={<ShopHome setCart={setCart} />} />
-
+          <Route path="/" element={<ShopHome cart={cart} setCart={setCart} search={search} />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/track" element={<OrderTracking />} />
           <Route path="/admin" element={<AdminLogin />} />
-
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
 
       <Footer />
-    </div>
-  );
-}
-
-/* =========================
-   TOP NAVIGATION BAR
-========================= */
-
-function TopNavigation({ cart, cartCount, totals }) {
-  return (
-    <div style={styles.navBar}>
-      <div style={styles.navLinks}>
-        <Link to="/">Home</Link>
-        <Link to="/shop">Shop</Link>
-        <Link to="/cart">Cart</Link>
-        <Link to="/checkout">Checkout</Link>
-        <Link to="/contact">Contact</Link>
-        <Link to="/track">Track</Link>
-      </div>
-
-      <div style={styles.navActions}>
-        <a
-          href={createWhatsAppLink(cart)}
-          target="_blank"
-          rel="noreferrer"
-          style={styles.whatsappBtn}
-        >
-          Order on WhatsApp
-        </a>
-
-        <a href={`tel:+91${WHATSAPP_NUMBER}`} style={styles.callBtn}>
-          Call Now
-        </a>
-
-        <div style={{ fontSize: 12 }}>
-          <b>Cart:</b> {cartCount} items • <b>Total:</b>{" "}
-          {formatINR(totals.total)}
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 
 /* =========================
    SHOP HOME PAGE
 ========================= */
-
-function ShopHome({ setCart }) {
+function ShopHome({ setCart, search = "" }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -154,6 +118,12 @@ function ShopHome({ setCart }) {
       .finally(() => setLoading(false));
   }, []);
 
+  // ✅ SEARCH FILTER (case-insensitive)
+  const query = search.trim().toLowerCase();
+  const filteredProducts = query
+    ? products.filter((p) => (p.name || "").toLowerCase().includes(query))
+    : products;
+
   return (
     <>
       <HeroSection />
@@ -161,12 +131,14 @@ function ShopHome({ setCart }) {
       {error && <p style={{ color: "red" }}>{error}</p>}
       {loading && <p>Loading...</p>}
 
-      {!loading && !error && products.length === 0 && (
-        <p>No products found.</p>
+      {!loading && !error && filteredProducts.length === 0 && (
+        <p className="muted" style={{ marginTop: 12 }}>
+          No results for <b>{search}</b>. Try “Surmai”, “Pomfret”, “Rohu”.
+        </p>
       )}
 
-      <div style={styles.grid}>
-        {products.map((product) => (
+      <div className="productsGrid">
+        {filteredProducts.map((product) => (
           <ProductCard
             key={product._id || product.id}
             product={product}
