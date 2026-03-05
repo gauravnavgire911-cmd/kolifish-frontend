@@ -7,6 +7,7 @@ import { WEIGHTS, addToCart, calcItemTotal, loadCart, calcCartTotals } from "./c
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/footer.jsx";
 
+import ProductPage from "./pages/product.jsx";
 import AdminLogin from "./pages/adminlogin.jsx";
 import CartPage from "./pages/cartpage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
@@ -74,6 +75,7 @@ export default function App() {
             path="/"
             element={<ShopHome cart={cart} setCart={setCart} search={search} />}
           />
+		  <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
