@@ -2,7 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { getProducts } from "./api";
 
-import { WEIGHTS, addToCart, calcItemTotal, loadCart, calcCartTotals } from "./components/cartUtils";
+import {
+  WEIGHTS,
+  addToCart,
+  calcItemTotal,
+  loadCart,
+  calcCartTotals,
+} from "./components/cartUtils";
 
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/footer.jsx";
@@ -16,6 +22,7 @@ import OrderTracking from "./pages/ordertracking.jsx";
 import ShopPage from "./pages/shop.jsx";
 
 const WHATSAPP_NUMBER = "8600010944";
+const FALLBACK_IMG = "https://via.placeholder.com/600x450?text=KoliFish";
 
 /* =========================
    Utility Functions
@@ -68,14 +75,13 @@ export default function App() {
         onSearchChange={setSearch}
       />
 
-      {/* ✅ NO inline styles here (lets premium body background show) */}
       <main className="container">
         <Routes>
           <Route
             path="/"
-            element={<ShopHome cart={cart} setCart={setCart} search={search} />}
+            element={<ShopHome setCart={setCart} search={search} />}
           />
-		  <Route path="/product/:id" element={<ProductPage />} />
+          <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
@@ -116,7 +122,6 @@ function ShopHome({ setCart, search = "" }) {
       .finally(() => setLoading(false));
   }, []);
 
-  // ✅ SEARCH FILTER (case-insensitive)
   const query = search.trim().toLowerCase();
   const filteredProducts = query
     ? products.filter((p) => (p.name || "").toLowerCase().includes(query))
@@ -145,6 +150,7 @@ function ShopHome({ setCart, search = "" }) {
                 productId: product._id || product.id,
                 name: product.name,
                 image: product.image,
+                images: product.images || [],
                 pricePerKg: product.pricePerKg,
                 weightKg,
                 qty: 1,
@@ -190,19 +196,58 @@ function HeroSection() {
 ========================= */
 function ProductCard({ product, onAdd }) {
   const [weightKg, setWeightKg] = useState(0.5);
+  const [hover, setHover] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const imageList = useMemo(() => {
+    const list = [];
+
+    if (product?.image) {
+      list.push(product.image);
+    }
+
+    if (Array.isArray(product?.images) && product.images.length) {
+      list.push(...product.images.filter(Boolean));
+    }
+
+    const cleaned = Array.from(new Set(list.filter(Boolean)));
+    return cleaned.length ? cleaned : [FALLBACK_IMG];
+  }, [product]);
+
+  useEffect(() => {
+    setCurrentIndex(0);
+
+    if (imageList.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % imageList.length);
+    }, 2000);
+
+    return () => clearInterval(timer);
+  }, [imageList]);
+
+  const displayedImage = hover
+    ? imageList[1] || imageList[0]
+    : imageList[currentIndex] || FALLBACK_IMG;
+
   const price = Math.round((product.pricePerKg || 0) * weightKg);
 
   return (
-    <div className="productCard">
+    <div
+      className="productCard"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
       <div className="ribbon">Fresh Today</div>
 
-      {product.image && (
-        <img
-          src={product.image}
-          alt={product.name}
-          onError={(e) => (e.currentTarget.style.display = "none")}
-        />
-      )}
+      <img
+        src={displayedImage}
+        alt={product?.name || "Product"}
+        loading="lazy"
+        onError={(e) => {
+          e.currentTarget.src = FALLBACK_IMG;
+        }}
+      />
 
       <div className="content">
         <h3>{product.name}</h3>
@@ -212,7 +257,10 @@ function ProductCard({ product, onAdd }) {
           <span className="subPrice">{formatINR(product.pricePerKg)}/kg</span>
         </div>
 
-        <select value={weightKg} onChange={(e) => setWeightKg(Number(e.target.value))}>
+        <select
+          value={weightKg}
+          onChange={(e) => setWeightKg(Number(e.target.value))}
+        >
           {WEIGHTS.map((w) => (
             <option key={w.kg} value={w.kg}>
               {w.label}
@@ -225,12 +273,3 @@ function ProductCard({ product, onAdd }) {
     </div>
   );
 }
-
-/* =========================
-   NOTE
-========================= */
-/**
- * ✅ Removed old inline "styles" object entirely.
- * Reason: inline background was overriding your premium CSS background.
- * Keep all styling inside src/styles.css (premium theme).
- */
