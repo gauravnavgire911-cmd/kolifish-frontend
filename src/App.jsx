@@ -238,7 +238,7 @@ function ProductCard({ product, onAdd }) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <div className="ribbon">Fresh Today</div>
+      <div className="ribbon">Fresh Today - Slider Live</div>
 
       <img
         src={displayedImage}
