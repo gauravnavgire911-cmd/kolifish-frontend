@@ -1,17 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { getProducts } from "./api";
 
 import {
-  WEIGHTS,
-  addToCart,
-  calcItemTotal,
   loadCart,
   calcCartTotals,
 } from "./components/cartUtils";
 
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/footer.jsx";
+import ProductCard from "./components/ProductCard.jsx";
 
 import ProductPage from "./pages/product.jsx";
 import AdminLogin from "./pages/adminlogin.jsx";
@@ -22,16 +20,13 @@ import OrderTracking from "./pages/ordertracking.jsx";
 import ShopPage from "./pages/shop.jsx";
 
 const WHATSAPP_NUMBER = "8600010944";
-const FALLBACK_IMG = "https://via.placeholder.com/600x450?text=KoliFish";
 
 /* =========================
    Utility Functions
 ========================= */
-const formatINR = (n) => `₹${Number(n || 0)}`;
-
 const createWhatsAppLink = (cart) => {
   const lines = cart.map((item) => {
-    const grams = Math.round(item.weightKg * 1000);
+    const grams = Math.round((item.weightKg || 0) * 1000);
     return `• ${item.name} — ${grams}g × ${item.qty} = ₹${item.lineTotal}`;
   });
 
@@ -52,7 +47,7 @@ const createWhatsAppLink = (cart) => {
    MAIN APP
 ========================= */
 export default function App() {
-  const [cart, setCart] = useState(() => loadCart());
+  const [cart] = useState(() => loadCart());
   const [search, setSearch] = useState("");
 
   const cartCount = useMemo(
@@ -77,10 +72,7 @@ export default function App() {
 
       <main className="container">
         <Routes>
-          <Route
-            path="/"
-            element={<ShopHome setCart={setCart} search={search} />}
-          />
+          <Route path="/" element={<HomePage search={search} />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/cart" element={<CartPage />} />
@@ -98,9 +90,10 @@ export default function App() {
 }
 
 /* =========================
-   SHOP HOME PAGE
+   HOME PAGE
 ========================= */
-function ShopHome({ setCart, search = "" }) {
+function HomePage({ search = "" }) {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -116,7 +109,8 @@ function ShopHome({ setCart, search = "" }) {
           ...p,
           pricePerKg: p.pricePerKg ?? p.price ?? 0,
         }));
-        setProducts(normalized);
+
+        setProducts(normalized.slice(0, 6));
       })
       .catch((err) => setError(err?.message || "Failed to load products"))
       .finally(() => setLoading(false));
@@ -124,50 +118,24 @@ function ShopHome({ setCart, search = "" }) {
 
   const query = search.trim().toLowerCase();
   const filteredProducts = query
-    ? products.filter((p) => (p.name || "").toLowerCase().includes(query))
+    ? products.filter((p) =>
+        [p.name || "", p.altName || "", p.category || "", p.description || ""]
+          .join(" ")
+          .toLowerCase()
+          .includes(query)
+      )
     : products;
 
   return (
     <>
       <HeroSection />
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {loading && <p>Loading...</p>}
-
-      {!loading && !error && filteredProducts.length === 0 && (
-        <p className="muted" style={{ marginTop: 12 }}>
-          No results for <b>{search}</b>. Try “Surmai”, “Pomfret”, “Rohu”.
-        </p>
-      )}
-
-      <div className="productsGrid">
-        {filteredProducts.map((product) => (
-          <ProductCard
-            key={product._id || product.id}
-            product={product}
-            onAdd={(weightKg) => {
-              const newCart = addToCart({
-                productId: product._id || product.id,
-                name: product.name,
-                image: product.image,
-                images: product.images || [],
-                pricePerKg: product.pricePerKg,
-                weightKg,
-                qty: 1,
-                lineTotal: 0,
-              });
-
-              const updatedCart = newCart.map((item) => ({
-                ...item,
-                lineTotal: calcItemTotal(item.pricePerKg, item.weightKg, item.qty),
-              }));
-
-              localStorage.setItem("kolifish_cart_v1", JSON.stringify(updatedCart));
-              setCart(updatedCart);
-            }}
-          />
-        ))}
-      </div>
+      <FeaturedSection
+        products={filteredProducts}
+        loading={loading}
+        error={error}
+        onOpen={(productId) => navigate(`/product/${productId}`)}
+      />
+      <WhyChooseUs />
     </>
   );
 }
@@ -192,84 +160,97 @@ function HeroSection() {
 }
 
 /* =========================
-   PRODUCT CARD
+   FEATURED SECTION
 ========================= */
-function ProductCard({ product, onAdd }) {
-  const [weightKg, setWeightKg] = useState(0.5);
-  const [hover, setHover] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
+function FeaturedSection({ products, loading, error, onOpen }) {
+  return (
+    <section style={{ marginTop: 24 }}>
+      <div style={{ marginBottom: 16 }}>
+        <h2 style={{ marginBottom: 6 }}>Featured Catch</h2>
+        <p className="muted" style={{ marginTop: 0 }}>
+          Handpicked fresh seafood from today’s best selection.
+        </p>
+      </div>
 
-  const imageList = useMemo(() => {
-    const list = [];
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {loading && <p>Loading...</p>}
 
-    if (product?.image) {
-      list.push(product.image);
-    }
+      {!loading && !error && products.length === 0 && (
+        <p className="muted">No featured products found right now.</p>
+      )}
 
-    if (Array.isArray(product?.images) && product.images.length) {
-      list.push(...product.images.filter(Boolean));
-    }
+      {!loading && !error && products.length > 0 && (
+        <div className="productsGrid">
+          {products.map((product) => (
+            <ProductCard
+              key={product._id || product.id}
+              product={product}
+              onOpen={() => onOpen(product._id || product.id)}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
 
-    const cleaned = Array.from(new Set(list.filter(Boolean)));
-    return cleaned.length ? cleaned : [FALLBACK_IMG];
-  }, [product]);
-
-  useEffect(() => {
-    setCurrentIndex(0);
-
-    if (imageList.length <= 1) return;
-
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % imageList.length);
-    }, 2000);
-
-    return () => clearInterval(timer);
-  }, [imageList]);
-
-  const displayedImage = hover
-    ? imageList[1] || imageList[0]
-    : imageList[currentIndex] || FALLBACK_IMG;
-
-  const price = Math.round((product.pricePerKg || 0) * weightKg);
+/* =========================
+   WHY CHOOSE US
+========================= */
+function WhyChooseUs() {
+  const items = [
+    {
+      title: "Freshly Sourced",
+      text: "Selected seafood from trusted markets and coastal supply chains.",
+    },
+    {
+      title: "Cleaned Your Way",
+      text: "Choose preferred cutting styles depending on the fish type.",
+    },
+    {
+      title: "Packed Hygienically",
+      text: "Handled and packed carefully for freshness and clean delivery.",
+    },
+    {
+      title: "Quick Delivery",
+      text: "Fast doorstep service across your delivery area.",
+    },
+  ];
 
   return (
-    <div
-      className="productCard"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
-      <div className="ribbon">Fresh Today - Slider Live</div>
-
-      <img
-        src={displayedImage}
-        alt={product?.name || "Product"}
-        loading="lazy"
-        onError={(e) => {
-          e.currentTarget.src = FALLBACK_IMG;
-        }}
-      />
-
-      <div className="content">
-        <h3>{product.name}</h3>
-
-        <div className="meta">
-          <span className="price">{formatINR(price)}</span>
-          <span className="subPrice">{formatINR(product.pricePerKg)}/kg</span>
-        </div>
-
-        <select
-          value={weightKg}
-          onChange={(e) => setWeightKg(Number(e.target.value))}
-        >
-          {WEIGHTS.map((w) => (
-            <option key={w.kg} value={w.kg}>
-              {w.label}
-            </option>
-          ))}
-        </select>
-
-        <button onClick={() => onAdd(weightKg)}>Add to Cart</button>
+    <section style={{ marginTop: 36, marginBottom: 12 }}>
+      <div style={{ marginBottom: 16 }}>
+        <h2 style={{ marginBottom: 6 }}>Why KoliFish</h2>
+        <p className="muted" style={{ marginTop: 0 }}>
+          Fresh seafood with a cleaner, simpler buying experience.
+        </p>
       </div>
-    </div>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: 16,
+        }}
+      >
+        {items.map((item) => (
+          <div
+            key={item.title}
+            style={{
+              background: "#fff",
+              borderRadius: 18,
+              padding: 18,
+              border: "1px solid rgba(0,0,0,0.06)",
+              boxShadow: "0 10px 28px rgba(0,0,0,0.05)",
+            }}
+          >
+            <h3 style={{ marginTop: 0, marginBottom: 8 }}>{item.title}</h3>
+            <p style={{ margin: 0, opacity: 0.8, lineHeight: 1.6 }}>
+              {item.text}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
