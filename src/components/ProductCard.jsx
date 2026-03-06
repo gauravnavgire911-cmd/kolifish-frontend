@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useCart } from "../context/CartContext";
 
 const FALLBACK_IMG = "https://via.placeholder.com/600x450?text=KoliFish";
@@ -6,23 +6,47 @@ const FALLBACK_IMG = "https://via.placeholder.com/600x450?text=KoliFish";
 const ProductCard = ({ product, onOpen }) => {
   const { addToCart } = useCart();
   const [hover, setHover] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const { mainImage, hoverImage } = useMemo(() => {
-    const img0 = product?.images?.[0] || product?.image || FALLBACK_IMG;
-    const img1 = product?.images?.[1] || img0;
-    return { mainImage: img0, hoverImage: img1 };
+  const imageList = useMemo(() => {
+    const list = [];
+
+    if (Array.isArray(product?.images) && product.images.length) {
+      list.push(...product.images.filter(Boolean));
+    }
+
+    if (product?.image) {
+      list.unshift(product.image);
+    }
+
+    const cleaned = Array.from(new Set(list.filter(Boolean)));
+    return cleaned.length ? cleaned : [FALLBACK_IMG];
   }, [product]);
+
+  useEffect(() => {
+    setCurrentIndex(0);
+
+    if (imageList.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % imageList.length);
+    }, 2000);
+
+    return () => clearInterval(timer);
+  }, [imageList]);
+
+  const displayedImage = hover
+    ? imageList[1] || imageList[0]
+    : imageList[currentIndex] || FALLBACK_IMG;
 
   const price = product?.pricePerKg ?? product?.price ?? 0;
 
   const handleAddToCart = (e) => {
-    // If card becomes clickable later, prevent click bubbling
     e?.stopPropagation?.();
     addToCart(product);
   };
 
   const handleOpen = () => {
-    // optional: if you pass onOpen, it can navigate to product page
     if (typeof onOpen === "function") onOpen(product);
   };
 
@@ -42,11 +66,10 @@ const ProductCard = ({ product, onOpen }) => {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      {/* Premium Ribbon */}
       <div className="ribbon">Fresh Today</div>
 
       <img
-        src={hover ? hoverImage : mainImage}
+        src={displayedImage}
         alt={product?.name || "Product"}
         loading="lazy"
         onError={(e) => {
