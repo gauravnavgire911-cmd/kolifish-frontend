@@ -47,8 +47,18 @@ const createWhatsAppLink = (cart) => {
    MAIN APP
 ========================= */
 export default function App() {
-  const [cart] = useState(() => loadCart());
+  const [cart, setCart] = useState(() => loadCart());
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const syncCart = () => setCart(loadCart());
+
+    window.addEventListener("cart-updated", syncCart);
+
+    return () => {
+      window.removeEventListener("cart-updated", syncCart);
+    };
+  }, []);
 
   const cartCount = useMemo(
     () => cart.reduce((sum, item) => sum + (item.qty || 0), 0),
@@ -57,6 +67,8 @@ export default function App() {
 
   const totals = useMemo(() => calcCartTotals(cart), [cart]);
 
+  // rest of your component...
+}
   return (
     <>
       <Navbar
@@ -147,13 +159,19 @@ function HeroSection() {
   return (
     <div className="hero">
       <h1>Fresh. Clean-Cut. Delivered.</h1>
-      <p>90-minute delivery • Free delivery • COD / UPI / Card</p>
+
+      <p>Premium seafood delivered to your doorstep.</p>
+
+      {/* Delivery urgency badge */}
+      <div className="delivery-timer">
+        ⚡ Order now for delivery in 90 minutes
+      </div>
 
       <div className="badgeRow">
         <span className="badge">✔ FSSAI Certified</span>
-        <span className="badge">✔ 100% Fresh Guarantee</span>
-        <span className="badge">✔ Same Day Delivery</span>
-        <span className="badge">✔ Hygienic Processing Unit</span>
+        <span className="badge">✔ Hygienic Processing</span>
+        <span className="badge">✔ Fresh Catch Daily</span>
+        <span className="badge">✔ Free Delivery</span>
       </div>
     </div>
   );

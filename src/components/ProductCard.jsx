@@ -1,13 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useCart } from "../context/CartContext";
+import { WEIGHTS } from "../components/cartUtils";
 
 const FALLBACK_IMG = "https://via.placeholder.com/600x450?text=KoliFish";
 
 const ProductCard = ({ product, onOpen }) => {
   const { addToCart } = useCart();
+
   const [hover, setHover] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedWeight, setSelectedWeight] = useState(WEIGHTS[0].kg);
+  const [anim, setAnim] = useState(false);
 
+  /* =============================
+     Build image list
+  ============================= */
   const imageList = useMemo(() => {
     const list = [];
 
@@ -23,6 +30,9 @@ const ProductCard = ({ product, onOpen }) => {
     return cleaned.length ? cleaned : [FALLBACK_IMG];
   }, [product]);
 
+  /* =============================
+     Auto image slider
+  ============================= */
   useEffect(() => {
     setCurrentIndex(0);
 
@@ -41,18 +51,40 @@ const ProductCard = ({ product, onOpen }) => {
 
   const price = product?.pricePerKg ?? product?.price ?? 0;
 
+  /* =============================
+     Add to cart
+  ============================= */
   const handleAddToCart = (e) => {
     e?.stopPropagation?.();
-    addToCart(product);
+
+    const item = {
+      productId: product?._id || product?.id,
+      name: product?.name,
+      pricePerKg: price,
+      weightKg: selectedWeight,
+      qty: 1,
+      image: displayedImage,
+    };
+
+    addToCart(item);
+
+    /* cart animation */
+    setAnim(true);
+    setTimeout(() => setAnim(false), 180);
   };
 
   const handleOpen = () => {
-    if (typeof onOpen === "function") onOpen(product);
+    if (typeof onOpen === "function") {
+      onOpen(product?._id || product?.id);
+    }
   };
 
+  /* =============================
+     UI
+  ============================= */
   return (
     <div
-      className="product-card"
+      className={`product-card ${anim ? "cart-anim" : ""}`}
       role={onOpen ? "button" : undefined}
       tabIndex={onOpen ? 0 : undefined}
       onClick={onOpen ? handleOpen : undefined}
@@ -79,9 +111,30 @@ const ProductCard = ({ product, onOpen }) => {
 
       <div className="card-content">
         <h3>{product?.name}</h3>
+
         <p className="price">₹{price}/kg</p>
 
-        <button onClick={handleAddToCart}>Add to Cart</button>
+        {/* Weight selector */}
+        <div className="weight-selector">
+          {WEIGHTS.map((w) => (
+            <button
+              key={w.kg}
+              className={`weight-btn ${
+                selectedWeight === w.kg ? "active" : ""
+              }`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedWeight(w.kg);
+              }}
+            >
+              {w.label}
+            </button>
+          ))}
+        </div>
+
+        <button className="add-cart-btn" onClick={handleAddToCart}>
+          Add to Cart
+        </button>
       </div>
     </div>
   );

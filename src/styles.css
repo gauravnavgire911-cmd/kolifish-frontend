@@ -647,3 +647,14 @@ img{ max-width: 100%; display: block; }
 .thumb.active {
   border-color: rgba(0,0,0,0.40);
 }
+
+.delivery-timer{
+  background:#16a34a;
+  color:white;
+  padding:8px 14px;
+  border-radius:20px;
+  display:inline-block;
+  margin-top:10px;
+  font-size:14px;
+  font-weight:600;
+}
